@@ -7,10 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './event.scss',
 })
 export class Event{
-  name: string;
-  startDate: Date;
-  endDate: Date;
-  capacity: number;
-  numberOfMembers: number;
-  type:
+  
 }
