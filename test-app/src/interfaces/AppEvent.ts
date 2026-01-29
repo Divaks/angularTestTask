@@ -1,7 +1,7 @@
 import {EventType} from "../types/EventType"
 
-export interface Event {
-  id: string;
+export interface AppEvent {
+  id?: string;
   title: string;
   capacity: number;
   startTime: string;
