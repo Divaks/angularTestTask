@@ -1,5 +1,14 @@
 import {Injectable, inject} from '@angular/core';
-import { Firestore, collection, collectionData, addDoc, doc, updateDoc, deleteDoc } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  collectionData,
+  addDoc,
+  doc,
+  updateDoc,
+  deleteDoc,
+  docData
+} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { AppEvent } from '../interfaces/AppEvent';
 
@@ -14,13 +23,18 @@ export class EventService {
     return collectionData(this.eventsCollection, { idField: 'id' }) as Observable<Event[]>;
   }
 
+  getEventById(id: string): Observable<AppEvent> {
+    const eventDocRef = doc(this.firestore, `events/${id}`);
+    return docData(eventDocRef, { idField: 'id' }) as Observable<AppEvent>;
+  }
+
   addEvent(eventToAdd: AppEvent){
     return addDoc(this.eventsCollection, eventToAdd);
   }
 
-  updateEvent(eventToUpdate: AppEvent){
-    const docRef = doc(this.firestore, 'events', eventToUpdate.id!);
-    return updateDoc(docRef, { ...eventToUpdate });
+  updateEvent(id: string, data: any) {
+    const eventDocRef = doc(this.firestore, `events/${id}`);
+    return updateDoc(eventDocRef, data);
   }
 
   deleteEvent(id: string) {

@@ -1,1 +1,8 @@
-<p>event-list works!</p>
+<button routerLink="/events/create">Додати нову подію</button>
+
+@for (event of events(); track event.id) {
+  <div>
+    <span>{{ event.title }}</span>
+    <button [routerLink]="['/events/edit', event.id]">Редагувати</button>
+  </div>
+}
