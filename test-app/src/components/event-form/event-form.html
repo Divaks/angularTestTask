@@ -1,1 +1,43 @@
-<p>event-form works!</p>
+<form [formGroup]="form" (ngSubmit)="submit()" class="event-form">
+  <div class="form-group">
+    <label for="title">Назва події</label>
+    <input id="title" type="text" formControlName="title">
+    @if (form.get('title')?.invalid && form.get('title')?.touched) {
+      <small class="error">Обов'язкове поле</small>
+    }
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="type">Тип події</label>
+      <select id="type" formControlName="type">
+        <option [ngValue]="null" disabled>Оберіть тип</option>
+        @for (item of eEventType | keyvalue; track item.key) {
+          <option [value]="item.value">{{ item.value }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="capacity">Місткість</label>
+      <input id="capacity" type="number" formControlName="capacity">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="startTime">Початок</label>
+      <input id="startTime" type="datetime-local" formControlName="startTime">
+    </div>
+
+    <div class="form-group">
+      <label for="endTime">Кінець</label>
+      <input id="endTime" type="datetime-local" formControlName="endTime">
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <a routerLink="/" class="btn-secondary">Скасувати</a>
+    <button type="submit" class="btn-primary" [disabled]="form.invalid">Зберегти</button>
+  </div>
+</form>

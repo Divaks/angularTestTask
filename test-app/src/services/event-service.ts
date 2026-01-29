@@ -1,26 +1,26 @@
-import {Injectable, inject} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   Firestore,
   collection,
   collectionData,
-  addDoc,
   doc,
-  updateDoc,
   deleteDoc,
-  docData
+  docData,
+  updateDoc,
+  addDoc,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { AppEvent } from '../interfaces/AppEvent';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class EventService {
   private firestore = inject(Firestore);
   private eventsCollection = collection(this.firestore, 'events');
 
-  getEvents(): Observable<Event[]>{
-    return collectionData(this.eventsCollection, { idField: 'id' }) as Observable<Event[]>;
+  getEvents(): Observable<AppEvent[]> {
+    return collectionData(this.eventsCollection, {
+      idField: 'id'
+    }) as Observable<AppEvent[]>;
   }
 
   getEventById(id: string): Observable<AppEvent> {
@@ -28,8 +28,8 @@ export class EventService {
     return docData(eventDocRef, { idField: 'id' }) as Observable<AppEvent>;
   }
 
-  addEvent(eventToAdd: AppEvent){
-    return addDoc(this.eventsCollection, eventToAdd);
+  addEvent(event: AppEvent) {
+    return addDoc(this.eventsCollection, event);
   }
 
   updateEvent(id: string, data: any) {
@@ -38,7 +38,7 @@ export class EventService {
   }
 
   deleteEvent(id: string) {
-    const docRef = doc(this.firestore, 'events', id);
-    return deleteDoc(docRef);
+    const eventDocRef = doc(this.firestore, `events/${id}`);
+    return deleteDoc(eventDocRef);
   }
 }

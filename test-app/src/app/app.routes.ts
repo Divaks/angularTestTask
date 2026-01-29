@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
 import { EventList } from '../components/event-list/event-list';
 import { EventForm } from '../components/event-form/event-form';
+import { EventCreate } from '../components/event-create/event-create';
 
-export const routes: Routes = [{
-  path: 'events', component: EventList },
-  { path: 'events/create', component: EventForm },
-  { path: 'events/edit/:id', component: EventForm },
+export const routes: Routes = [
+  { path: '', component: EventList },
+  { path: 'create', component: EventCreate },
+  { path: 'edit/:id', component: EventForm },
 ];

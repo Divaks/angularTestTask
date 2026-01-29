@@ -1,8 +1,51 @@
-<button routerLink="/events/create">Додати нову подію</button>
+<div class="container">
+  <header class="header">
+    <h1>Список подій</h1>
+    <a routerLink="/create" class="btn btn-primary">+ Створити подію</a>
+  </header>
 
-@for (event of events(); track event.id) {
-  <div>
-    <span>{{ event.title }}</span>
-    <button [routerLink]="['/events/edit', event.id]">Редагувати</button>
-  </div>
-}
+  @if (events$ | async; as events) {
+
+    @if (events.length === 0) {
+      <div class="empty-state">Подій немає.</div>
+    }
+
+    <div class="event-grid">
+      @for (event of events; track event.id) {
+        <div class="event-card">
+          <div class="card-body">
+
+            <div class="card-header-row">
+              <h3 class="card-title">{{ event.title }}</h3>
+              <span class="badge" [class.paid]="event.type === 'PAID'">{{ event.type }}</span>
+            </div>
+
+            <div class="card-meta">
+              @if (event.startTime) {
+                <div class="date-row">
+                  🕒 {{ (event.startTime.toDate ? event.startTime.toDate() : event.startTime) | date:'short' }}
+                  — {{ (event.endTime.toDate ? event.endTime.toDate() : event.endTime) | date:'shortTime' }}
+                </div>
+              }
+
+              <div class="capacity-row">
+                👥 Учасників: <strong>{{ event.countOfMembers }}</strong> / {{ event.capacity }}
+              </div>
+            </div>
+
+          </div>
+
+          <div class="card-actions">
+            @if (event.id) {
+              <a [routerLink]="['/edit', event.id]" class="btn-link">Редагувати</a>
+              <button (click)="onDelete(event.id!)" class="btn-delete">Видалити</button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+  } @else {
+    <div class="loading-state">Завантаження...</div>
+  }
+</div>
