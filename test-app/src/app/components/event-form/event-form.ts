@@ -4,22 +4,11 @@ import { RouterLink } from '@angular/router';
 import { KeyValuePipe } from '@angular/common';
 import { EventType } from '../../types/EventType';
 import { AppEvent } from '../../interfaces/AppEvent';
-import {
-  NgxMatDatetimePickerModule,
-  NgxMatTimepickerModule,
-  NgxMatNativeDateModule
-} from '@angular-material-components/datetime-picker';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
+
 @Component({
   selector: 'app-event-form',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, KeyValuePipe,
-    MatInputModule,
-    MatDatepickerModule,
-    NgxMatDatetimePickerModule,
-    NgxMatTimepickerModule,
-    NgxMatNativeDateModule,],
+  imports: [ReactiveFormsModule, RouterLink, KeyValuePipe ],
   templateUrl: './event-form.html',
   styleUrls: ['./event-form.scss']
 })

@@ -1,51 +1,81 @@
-<div class="container">
-  <header class="header">
+<div class="list-wrapper">
+  <div class="header-section">
     <h1>Список подій</h1>
-    <a routerLink="/create" class="btn btn-primary">+ Створити подію</a>
-  </header>
+    <button routerLink="/create" class="btn-create">+ Створити подію</button>
+  </div>
 
-  @if (events$ | async; as events) {
-
-    @if (events.length === 0) {
-      <div class="empty-state">Подій немає.</div>
-    }
-
-    <div class="event-grid">
-      @for (event of events; track event.id) {
-        <div class="event-card">
-          <div class="card-body">
-
-            <div class="card-header-row">
-              <h3 class="card-title">{{ event.title }}</h3>
-              <span class="badge" [class.paid]="event.type === 'PAID'">{{ event.type }}</span>
-            </div>
-
-            <div class="card-meta">
-              @if (event.startTime) {
-                <div class="date-row">
-                  🕒 {{ (event.startTime.toDate ? event.startTime.toDate() : event.startTime) | date:'short' }}
-                  — {{ (event.endTime.toDate ? event.endTime.toDate() : event.endTime) | date:'shortTime' }}
-                </div>
-              }
-
-              <div class="capacity-row">
-                👥 Учасників: <strong>{{ event.countOfMembers }}</strong> / {{ event.capacity }}
-              </div>
-            </div>
-
-          </div>
-
-          <div class="card-actions">
-            @if (event.id) {
-              <a [routerLink]="['/edit', event.id]" class="btn-link">Редагувати</a>
-              <button (click)="onDelete(event.id!)" class="btn-delete">Видалити</button>
-            }
-          </div>
-        </div>
-      }
+  <div class="filters-container" [formGroup]="filterForm">
+    <div class="filter-group">
+      <label>Статус</label>
+      <select formControlName="status">
+        <option value="Всі">Всі</option>
+        <option value="Ще не почалась">Ще не почалась</option>
+        <option value="Активна">Активна</option>
+        <option value="Закінчилась">Закінчилась</option>
+      </select>
     </div>
 
-  } @else {
-    <div class="loading-state">Завантаження...</div>
-  }
+    <div class="filter-group">
+      <label>Тип</label>
+      <select formControlName="type">
+        <option value="Всі">Всі</option>
+        <option value="FREE">FREE</option>
+        <option value="PAID">PAID</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Місця</label>
+      <select formControlName="occupancy">
+        <option value="Всі">Всі</option>
+        <option value="Вільні">Є вільні місця</option>
+        <option value="Повні">Немає місць</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="events-grid">
+    @for (event of filteredEvents$ | async; track event.id) {
+      <div class="event-card" [attr.data-status]="getEventStatus(event)">
+        <div class="card-header">
+          <h3 class="event-title">{{ event.title || 'Без назви' }}</h3>
+          <span class="type-badge" [ngClass]="event.type?.toLowerCase()">
+            {{ event.type }}
+          </span>
+        </div>
+
+        <div class="card-content">
+          <div class="info-row">
+            <span class="label">Статус:</span>
+            <span class="status-text">{{ getEventStatus(event) }}</span>
+          </div>
+
+          <div class="occupancy-section">
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="getOccupancy(event)"></div>
+            </div>
+            <span class="occupancy-text">{{ getOccupancy(event) }}% заповнено</span>
+          </div>
+
+          <div class="date-section">
+            <div class="date-item">
+              <strong>Початок:</strong>
+              {{ (event.startTime?.toDate ? event.startTime.toDate() : event.startTime) | date:'dd.MM.yyyy HH:mm' }}
+            </div>
+            <div class="date-item">
+              <strong>Кінець:</strong>
+              {{ (event.endTime?.toDate ? event.endTime.toDate() : event.endTime) | date:'dd.MM.yyyy HH:mm' }}
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button [routerLink]="['/edit', event.id]" class="btn-edit">Редагувати</button>
+          <button (click)="onDelete(event.id!)" class="btn-delete">Видалити</button>
+        </div>
+      </div>
+    } @empty {
+      <div class="empty-state">Подій не знайдено за обраними фільтрами.</div>
+    }
+  </div>
 </div>

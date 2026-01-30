@@ -26,23 +26,13 @@
 
   <div class="form-row">
     <div class="form-group">
-      <label>Початок події</label>
-      <mat-form-field appearance="outline" class="custom-datetime">
-        <input matInput [ngxMatDatetimePicker]="startPicker" formControlName="startTime" placeholder="Оберіть дату та час">
-        <mat-datepicker-toggle matSuffix [for]="$any(startPicker)"></mat-datepicker-toggle>
-        <ngx-mat-datetime-picker #startPicker [showSpinners]="true" [showSeconds]="false">
-        </ngx-mat-datetime-picker>
-      </mat-form-field>
+      <label for="startTime">Початок</label>
+      <input id="startTime" type="datetime-local" formControlName="startTime">
     </div>
 
     <div class="form-group">
-      <label>Кінець події</label>
-      <mat-form-field appearance="outline" class="custom-datetime">
-        <input matInput [ngxMatDatetimePicker]="endPicker" formControlName="endTime" placeholder="Оберіть дату та час">
-        <mat-datepicker-toggle matSuffix [for]="$any(endPicker)"></mat-datepicker-toggle>
-        <ngx-mat-datetime-picker #endPicker [showSpinners]="true" [showSeconds]="false">
-        </ngx-mat-datetime-picker>
-      </mat-form-field>
+      <label for="endTime">Кінець</label>
+      <input id="endTime" type="datetime-local" formControlName="endTime">
     </div>
   </div>
 

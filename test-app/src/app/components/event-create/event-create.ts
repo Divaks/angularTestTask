@@ -8,7 +8,7 @@ import {CommonModule} from '@angular/common';
 @Component({
   selector: 'app-event-create',
   standalone: true,
-  imports: [EventForm, RouterOutlet, CommonModule],
+  imports: [EventForm, CommonModule],
   templateUrl: './event-create.html',
   styleUrls: ['./event-create.scss']
 })
