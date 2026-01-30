@@ -108,6 +108,16 @@
     .btn-edit { background: #f8fafc; border-color: #e2e8f0; color: #1e293b; }
     .btn-delete { background: #fff1f2; color: #e11d48; border-color: #fecdd3; }
   }
+
+  .price-value {
+    font-weight: 700;
+    color: #2563eb; // Твій основний синій
+  }
+
+  .price-free {
+    color: #059669; // Зелений для безкоштовних подій
+    font-weight: 600;
+  }
 }
 
 .empty-state { grid-column: 1 / -1; text-align: center; padding: 60px; color: #64748b; font-style: italic; }

@@ -4,11 +4,12 @@ import { RouterLink } from '@angular/router';
 import { KeyValuePipe } from '@angular/common';
 import { EventType } from '../../types/EventType';
 import { AppEvent } from '../../interfaces/AppEvent';
+import {dateRangeValidator} from '../../validators/date.validator';
 
 @Component({
   selector: 'app-event-form',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, KeyValuePipe ],
+  imports: [ReactiveFormsModule, RouterLink ],
   templateUrl: './event-form.html',
   styleUrls: ['./event-form.scss']
 })
@@ -23,14 +24,34 @@ export class EventForm implements OnChanges, OnInit {
     title: ['', [Validators.required, Validators.minLength(3)]],
     type: [null as EventType | null, Validators.required],
     capacity: [10, [Validators.required, Validators.min(1)]],
+    price: [null as number | null],
     startTime: ['', Validators.required],
-    endTime: ['', Validators.required]
+    endTime: ['', Validators.required],
+  }, {
+    validators: [dateRangeValidator]
   });
 
   ngOnInit() {
+    this.setupTypeSubscription();
+
     if (this.initialData) {
       this.patchFormValues(this.initialData);
     }
+  }
+
+  private setupTypeSubscription() {
+    this.form.get('type')?.valueChanges.subscribe(type => {
+      const priceControl = this.form.get('price');
+
+      if (type === 'PAID') {
+        priceControl?.setValidators([Validators.required, Validators.min(1)]);
+      } else {
+        priceControl?.clearValidators();
+        priceControl?.setValue(null);
+      }
+
+      priceControl?.updateValueAndValidity();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -50,6 +71,7 @@ export class EventForm implements OnChanges, OnInit {
     this.form.patchValue({
       title: data.title,
       type: data.type,
+      price: data.price,
       capacity: data.capacity,
       startTime: this.formatDate(data.startTime),
       endTime: this.formatDate(data.endTime)

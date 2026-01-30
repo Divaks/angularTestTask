@@ -17,7 +17,6 @@ export class EventCreate {
   private router = inject(Router);
 
   public async onSaveEvent(formData: any) {
-    console.warn('PARENT: RECEIVED DATA FROM CHILD!', formData);
 
     if (!formData) return;
 
@@ -27,11 +26,11 @@ export class EventCreate {
       type: formData.type,
       startTime: new Date(formData.startTime),
       endTime: new Date(formData.endTime),
-      countOfMembers: 0
+      countOfMembers: 0,
+      price: formData.type === 'PAID' ? Number(formData.price) : null
     };
 
     try {
-      console.log('PARENT: Sending to Firestore...', newEvent);
       await this.eventService.addEvent(newEvent);
       await this.router.navigate(['/']);
     } catch (err) {

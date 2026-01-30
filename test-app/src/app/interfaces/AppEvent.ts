@@ -6,7 +6,8 @@ export interface AppEvent {
   title: string;
   capacity: number;
   type: EventType;
-  startTime: Timestamp | Date | any; // Дозволяємо Date для створення
+  startTime: Timestamp | Date | any;
   endTime: Timestamp | Date | any;
   countOfMembers: number;
+  price?: number | null;
 }

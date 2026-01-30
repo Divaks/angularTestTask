@@ -7,22 +7,30 @@
     }
   </div>
 
-  <div class="form-row">
+  <div class="form-group">
+    <label>Тип події</label>
+    <select formControlName="type">
+      <option [value]="eEventType.Free">Безкоштовна</option>
+      <option [value]="eEventType.Paid">Платна</option>
+    </select>
+  </div>
+
+  @if (form.get('type')?.value === 'PAID') {
     <div class="form-group">
-      <label for="type">Тип події</label>
-      <select id="type" formControlName="type">
-        <option [ngValue]="null" disabled>Оберіть тип</option>
-        @for (item of eEventType | keyvalue; track item.key) {
-          <option [value]="item.value">{{ item.value }}</option>
-        }
-      </select>
+      <label>Ціна (грн)</label>
+      <input type="number" formControlName="price" placeholder="Введіть суму">
+
+      @if (form.get('price')?.invalid && form.get('price')?.touched) {
+        <div class="error-text">Вкажіть коректну ціну (мінімум 1 грн)</div>
+      }
     </div>
+  }
 
     <div class="form-group">
       <label for="capacity">Місткість</label>
       <input id="capacity" type="number" formControlName="capacity">
     </div>
-  </div>
+
 
   <div class="form-row">
     <div class="form-group">
@@ -40,4 +48,13 @@
     <a routerLink="/" class="btn-secondary">Скасувати</a>
     <button type="submit" class="btn-primary" [disabled]="form.invalid">Зберегти</button>
   </div>
+
+  <div class="form-row">
+  </div>
+
+  @if (form.errors?.['dateRangeInvalid'] && (form.get('startTime')?.touched || form.get('endTime')?.touched)) {
+    <div class="error-message">
+      Дата завершення має бути пізнішою за дату початку.
+    </div>
+  }
 </form>

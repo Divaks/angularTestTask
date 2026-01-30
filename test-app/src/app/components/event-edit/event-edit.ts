@@ -48,7 +48,8 @@ export class EventEdit implements OnInit {
       capacity: Number(formData.capacity),
       type: formData.type,
       startTime: new Date(formData.startTime),
-      endTime: new Date(formData.endTime)
+      endTime: new Date(formData.endTime),
+      price: formData.type === 'PAID' ? Number(formData.price) : null
     };
 
     try {

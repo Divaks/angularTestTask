@@ -42,6 +42,16 @@
           <span class="type-badge" [ngClass]="event.type?.toLowerCase()">
             {{ event.type }}
           </span>
+          <div class="info-row">
+            <span class="label">Вартість:</span>
+            @if (event.type === 'PAID') {
+              <span class="price-value">
+                {{ (event.price && event.price > 0) ? (event.price | currency:'UAH':'symbol-narrow') : 'Ціну не вказано' }}
+               </span>
+            } @else {
+              <span class="price-free">Безкоштовно</span>
+            }
+          </div>
         </div>
 
         <div class="card-content">
