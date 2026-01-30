@@ -90,3 +90,30 @@
     }
   }
 }
+
+/* Колір кнопок та активних елементів (Ваш Синій) */
+.mat-primary .mat-pseudo-checkbox-checked,
+.mat-primary .mat-option.mat-selected:not(.mat-option-disabled),
+.ngx-mat-timepicker-button,
+.mat-calendar-body-selected {
+  background-color: #2563eb !important;
+}
+
+/* Кнопка "ОК" у пікері */
+.ngx-mat-datetime-picker-confirm {
+  color: #2563eb !important;
+  font-weight: bold;
+}
+
+/* Стилізація самих полів введення */
+.custom-datetime {
+  width: 100%;
+  .mat-mdc-form-field-focus-overlay {
+    background-color: transparent;
+  }
+}
+
+/* Рамка при фокусі */
+.mat-mdc-form-field.mat-focused .mat-mdc-outline-縫隙 {
+  border-color: #2563eb !important;
+}

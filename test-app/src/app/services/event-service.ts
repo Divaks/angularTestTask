@@ -7,9 +7,9 @@ import {
   deleteDoc,
   docData,
   updateDoc,
-  addDoc,
+  addDoc, getDoc,
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import {map, Observable, tap} from 'rxjs';
 import { AppEvent } from '../interfaces/AppEvent';
 
 @Injectable({ providedIn: 'root' })
@@ -24,17 +24,23 @@ export class EventService {
   }
 
   getEventById(id: string): Observable<AppEvent> {
-    const eventDocRef = doc(this.firestore, `events/${id}`);
-    return docData(eventDocRef, { idField: 'id' }) as Observable<AppEvent>;
+    const docRef = doc(this.firestore, `events/${id}`);
+    return docData(docRef, { idField: 'id' }).pipe(
+      map(data => {
+        if (!data) throw new Error('Event not found');
+        return data as AppEvent;
+      })
+    );
   }
 
   addEvent(event: AppEvent) {
-    return addDoc(this.eventsCollection, event);
+    const colRef = collection(this.firestore, 'events');
+    return addDoc(colRef, event);
   }
 
-  updateEvent(id: string, data: any) {
-    const eventDocRef = doc(this.firestore, `events/${id}`);
-    return updateDoc(eventDocRef, data);
+  updateEvent(id: string, event: Partial<AppEvent>) {
+    const docRef = doc(this.firestore, `events/${id}`);
+    return updateDoc(docRef, event);
   }
 
   deleteEvent(id: string) {
