@@ -80,6 +80,14 @@
         </div>
 
         <div class="card-footer">
+          <button
+            (click)="onRegister(event)"
+            class="btn-register"
+            [disabled]="getOccupancy(event) >= 100 || getEventStatus(event) === 'Закінчилась'"
+          >
+            {{ getOccupancy(event) >= 100 ? 'Місць немає' : 'Зареєструватись' }}
+          </button>
+
           <button [routerLink]="['/edit', event.id]" class="btn-edit">Редагувати</button>
           <button (click)="onDelete(event.id!)" class="btn-delete">Видалити</button>
         </div>

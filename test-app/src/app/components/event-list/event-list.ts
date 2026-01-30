@@ -64,4 +64,19 @@ export class EventList {
       this.eventService.deleteEvent(id).catch(err => console.error(err));
     }
   }
+
+  async onRegister(event: AppEvent) {
+    const occupancy = this.getOccupancy(event);
+
+    if (occupancy >= 100) {
+      alert('На жаль, вільних місць більше немає!');
+      return;
+    }
+
+    try {
+      await this.eventService.registerForEvent(event.id!);
+    } catch (err) {
+      console.error('Помилка реєстрації:', err);
+    }
+  }
 }

@@ -7,7 +7,7 @@ import {
   deleteDoc,
   docData,
   updateDoc,
-  addDoc, getDoc,
+  addDoc, increment,
 } from '@angular/fire/firestore';
 import {map, Observable, tap} from 'rxjs';
 import { AppEvent } from '../interfaces/AppEvent';
@@ -46,5 +46,12 @@ export class EventService {
   deleteEvent(id: string) {
     const eventDocRef = doc(this.firestore, `events/${id}`);
     return deleteDoc(eventDocRef);
+  }
+
+  async registerForEvent(eventId: string){
+    const eventRef = doc(this.firestore, `events`, eventId);
+    return updateDoc(eventRef,{
+      countOfMembers: increment(1)
+    });
   }
 }
